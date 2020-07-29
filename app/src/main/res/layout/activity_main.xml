@@ -186,4 +186,16 @@
         android:layout_alignRight="@id/btndivide"
         android:text="=" />
 
+    <Button
+        android:id="@+id/btnexponent"
+        android:backgroundTint="@android:color/darker_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn7"
+        android:layout_toLeftOf="@id/dummy"
+        android:textSize="30sp"
+        android:text="x^" />
+
+
+
 </RelativeLayout>

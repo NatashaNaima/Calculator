@@ -7,17 +7,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.lang.Math;
 
 
 public class MainActivity extends AppCompatActivity {
     Button button0, button1, button2, button3, button4, button5, button6, button7, button8, button9,
-    buttonClear, buttonEqual, buttonDivide, buttonMulti, buttonSub, buttonAdd, buttonDecimal;
+    buttonClear, buttonEqual, buttonDivide, buttonMulti, buttonSub, buttonAdd, buttonDecimal, buttonExponent;
+
     TextView edtTxt;
 
-    ArrayList<Float> values = new ArrayList<Float>();;
+    ArrayList<Double> values = new ArrayList<Double>();;
     ArrayList<String> operands = new ArrayList<String>();;
     String current="0";
-    boolean division = false, multi=false, sub=false, add=false;
+    boolean division = false, multi=false, sub=false, add=false, expo=false;
 
 
 
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         buttonSub = (Button) findViewById(R.id.btnminus);
         buttonAdd = (Button) findViewById(R.id.btnplus);
         buttonDecimal = (Button) findViewById(R.id.btndec);
+        buttonExponent = (Button) findViewById(R.id.btnexponent);
 
         edtTxt = (TextView) findViewById(R.id.display);
 
@@ -131,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     if (edtTxt.getText().length() != 0) {
                         String input = (String) edtTxt.getText();
-                        values.add(Float.parseFloat(current));
+                        values.add(Double.parseDouble(current));
                         current = "";
                         operands.add("+");
                     }
@@ -148,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     if (edtTxt.getText().length() != 0) {
                         String input = (String) edtTxt.getText();
-                        values.add(Float.parseFloat(current));
+                        values.add(Double.parseDouble(current));
                         current = "";
                         operands.add("-");
                     }
@@ -165,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     if (edtTxt.getText().length() != 0) {
                         String input = (String) edtTxt.getText();
-                        values.add(Float.parseFloat(current));
+                        values.add(Double.parseDouble(current));
                         current = "";
                         operands.add("/");
                     }
@@ -182,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     if (edtTxt.getText().length() != 0) {
                         String input = (String) edtTxt.getText();
-                        values.add(Float.parseFloat(current));
+                        values.add(Double.parseDouble(current));
                         current = "";
                         operands.add("*");
                     }
@@ -193,6 +196,24 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        buttonExponent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    if (edtTxt.getText().length() != 0) {
+                        String input = (String) edtTxt.getText();
+                        values.add(Double.parseDouble(current));
+                        current = "";
+                        operands.add("^");
+                    }
+                    expo = true;
+                    edtTxt.setText(edtTxt.getText() + "^");
+                }catch(NumberFormatException e){
+                    edtTxt.setText("invalid inputs, clear and try again.");
+                }
+            }
+        });
+
         buttonClear.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -206,14 +227,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    values.add(Float.parseFloat(current));
+                    values.add(Double.parseDouble(current));
                     int i = 1;
+                    //exponent
+                    while (i<values.size() && values.size() != 1 && expo) {
+                        double input1 = values.get(i-1);
+                        double input2 = values.get(i);
+                        String operand = operands.get(i-1);
+                        double result;
+                        if(operand == "^") {
+                            result = Math.pow(input1, input2);
+                            values.set(i, result);
+                            values.remove(i - 1);
+                        }else{i+=1;}
+                    }
+                    i = 1;
                     // division and multiplication
                     while (i < values.size() && values.size() != 1 && (division || multi)) {
-                        float input2 = values.get(i);
-                        float input1 = values.get(i - 1);
+                        double input2 = values.get(i);
+                        double input1 = values.get(i - 1);
                         String operand = operands.get(i - 1);
-                        float result;
+                        double result;
                         if (operand == "*") {
                             result = input1 * input2;
                             values.set(i, result);
@@ -222,15 +256,15 @@ public class MainActivity extends AppCompatActivity {
                             result = input1 / input2;
                             values.set(i, result);
                             values.remove(i - 1);
-                        }
+                        } else{ i+=1;}
                     }
                     i = 1;
                     //addition and subtraction
                     while (values.size() != 1 && (add || sub)) {
-                        float input2 = values.get(i);
-                        float input1 = values.get(i - 1);
+                        double input2 = values.get(i);
+                        double input1 = values.get(i - 1);
                         String operand = operands.get(i - 1);
-                        float result;
+                        double result;
                         if (operand == "+") {
                             result = input1 + input2;
                             values.set(i, result);
