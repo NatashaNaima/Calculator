@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                         values.add(Double.parseDouble(current));
                         current = "";
                         operands.add("+");
-                    }
+                    }else{throw new NumberFormatException();}
                     add = true;
                     edtTxt.setText(edtTxt.getText() + "+");
                 } catch(NumberFormatException e){
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                         values.add(Double.parseDouble(current));
                         current = "";
                         operands.add("-");
-                    }
+                    }else{throw new NumberFormatException();}
                     sub = true;
                     edtTxt.setText(edtTxt.getText() + "-");
                 }catch(NumberFormatException e){
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                         values.add(Double.parseDouble(current));
                         current = "";
                         operands.add("/");
-                    }
+                    }else{throw new NumberFormatException();}
                     division = true;
                     edtTxt.setText(edtTxt.getText() + "/");
                 }catch(NumberFormatException e){
@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                         values.add(Double.parseDouble(current));
                         current = "";
                         operands.add("*");
-                    }
+                    }else{throw new NumberFormatException();}
                     multi = true;
                     edtTxt.setText(edtTxt.getText() + "x");
                 }catch(NumberFormatException e){
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                         values.add(Double.parseDouble(current));
                         current = "";
                         operands.add("^");
-                    }
+                    }else{throw new NumberFormatException();}
                     expo = true;
                     edtTxt.setText(edtTxt.getText() + "^");
                 }catch(NumberFormatException e){
@@ -252,10 +252,12 @@ public class MainActivity extends AppCompatActivity {
                             result = input1 * input2;
                             values.set(i, result);
                             values.remove(i - 1);
+                            operands.remove(i-1);
                         } else if (operand == "/") {
                             result = input1 / input2;
                             values.set(i, result);
                             values.remove(i - 1);
+                            operands.remove(i-1);
                         } else{ i+=1;}
                     }
                     i = 1;
@@ -269,10 +271,12 @@ public class MainActivity extends AppCompatActivity {
                             result = input1 + input2;
                             values.set(i, result);
                             values.remove(i - 1);
+                            operands.remove(i-1);
                         } else if (operand == "-") {
                             result = input1 - input2;
                             values.set(i, result);
                             values.remove(i - 1);
+                            operands.remove(i-1);
                         }
                     }
                     String result = values.get(0).toString();
