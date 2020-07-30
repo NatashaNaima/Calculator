@@ -226,6 +226,8 @@ public class MainActivity extends AppCompatActivity {
         buttonEqual.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                boolean divideByZero = false;
+                String answer = "";
                 try {
                     values.add(Double.parseDouble(current));
                     int i = 1;
@@ -239,11 +241,12 @@ public class MainActivity extends AppCompatActivity {
                             result = Math.pow(input1, input2);
                             values.set(i, result);
                             values.remove(i - 1);
+                            operands.remove(i-1);
                         }else{i+=1;}
                     }
                     i = 1;
                     // division and multiplication
-                    while (i < values.size() && values.size() != 1 && (division || multi)) {
+                    while (i < values.size() && values.size() != 1 && (division || multi) && !divideByZero) {
                         double input2 = values.get(i);
                         double input1 = values.get(i - 1);
                         String operand = operands.get(i - 1);
@@ -254,15 +257,17 @@ public class MainActivity extends AppCompatActivity {
                             values.remove(i - 1);
                             operands.remove(i-1);
                         } else if (operand == "/") {
-                            result = input1 / input2;
-                            values.set(i, result);
-                            values.remove(i - 1);
-                            operands.remove(i-1);
-                        } else{ i+=1;}
+                            if(input2 != 0) {
+                                result = input1 / input2;
+                                values.set(i, result);
+                                values.remove(i - 1);
+                                operands.remove(i - 1);
+                            }else{divideByZero = true;}
+                        }
                     }
                     i = 1;
                     //addition and subtraction
-                    while (values.size() != 1 && (add || sub)) {
+                    while (values.size() != 1 && (add || sub) && divideByZero) {
                         double input2 = values.get(i);
                         double input1 = values.get(i - 1);
                         String operand = operands.get(i - 1);
@@ -279,11 +284,14 @@ public class MainActivity extends AppCompatActivity {
                             operands.remove(i-1);
                         }
                     }
-                    String result = values.get(0).toString();
+                    if(divideByZero){
+                        answer = "Undefined. Cannot divide by zero";
+                    }else{answer = values.get(0).toString();}
+
                     values.clear();
                     operands.clear();
-                    current = result;
-                    edtTxt.setText(result);
+                    current = answer;
+                    edtTxt.setText(answer);
                 } catch(NumberFormatException e){
                     edtTxt.setText("invalid inputs, clear and try again.");
                 }
