@@ -1,0 +1,42 @@
+Test1
+enter valid math operation
+(1+1)
+press enter
+should return result (2)
+repeat with each operator (+,-,/,x,^)
+
+Test 2 (following test 1)
+enter valid operation
+press enter (test 1)
+press clear
+should clear result
+
+Test3
+Divide by zero (3/0)
+Should return undefined
+
+Test 4
+enter valid math operation (test1)
+press equal
+enter another operator followed by another input value (+2)
+press equal
+should return result of first value calculated and second operation (4)
+
+Test 5
+Enter valid math operation with repeated operators (5+3+2)
+should return correct result (10)
+
+Test 6
+Enter valid math operation multiple (different) operators (5+3-2)
+should return correct result (6)
+
+Test 7 
+Enter valid math operation with different operators out of BEDMAS order (2^3+3*4/2)
+should return correct result according to order of operations (14)
+
+Test 8 
+Enter a value in calculator
+press clear
+should return clear
+
+
